@@ -356,12 +356,13 @@
     }
     /* Styling untuk countdown timer */
     #countdown-container {
-      margin-top: 20px;
-      width: 100%; /* Mengikuti lebar kontainer */
-      max-width: 298px; /* Sesuaikan dengan lebar video */
+      margin: 20px auto;
       display: flex;
       justify-content: center;
       align-items: center;
+      text-align: center;
+      width: 100%;
+      max-width: 298px;
       gap: 10px;
       background-color: #b4a396;
       border: 1px solid #ccc;
@@ -375,20 +376,20 @@
     }
     /* Styling untuk tombol lokasi */
     #location-button {
-      margin-top: 20px;
-      width: 100%; /* Mengikuti lebar kontainer */
-      max-width: 298px; /* Sesuaikan dengan lebar video */
+      margin: 20px auto;
       display: flex;
       justify-content: center;
       align-items: center;
+      text-align: center;
+      width: 100%;
+      max-width: 298px;
       gap: 10px;
-      text-decoration: none; /* Hilangkan garis bawah */
-      color: inherit; /* Warisi warna dari parent */
-      cursor: pointer; /* Ganti menjadi pointer saat dihover */
       background-color: #b4a396;
       border: 1px solid #ccc;
       border-radius: 10px;
-      padding: 10px; /* Menambahkan efek pointer saat dihover */
+      padding: 10px;
+      text-decoration: none;
+      color: inherit;
     }
     #location-button span {
       font-size: 1rem;
@@ -521,11 +522,11 @@
     <button onclick="openInvitation()">Buka Undangan</button>
   </div>
   <!-- Pindahkan volume-control ke dalam div utama -->
-<div id="volume-control" title="Klik untuk mute/unmute" onclick="toggleAudio()">
-  <i class="fas fa-volume-up"></i>
-</div>
+  <div id="volume-control" title="Klik untuk mute/unmute" onclick="toggleAudio()">
+    <i id="volume-icon" class="fas fa-volume-up"></i>
+  </div>
 
-<audio id="invitation-audio" src="hiya zaujati.mp3" loop></audio>
+  <audio id="invitation-audio" src="hiya zaujati.mp3" loop></audio>
   <div id="mainContent" class="hidden">
     <div id="fullpage">
       <!-- Section 1 -->
@@ -738,24 +739,31 @@ function handleVideoPlayback(video) {
 // Fungsi toggle audio manual
 function toggleAudio() {
   const audio = document.getElementById('invitation-audio');
-  const icon = document.querySelector('#volume-control i');
+  const icon = document.getElementById('volume-icon');
+
   if (!audio) return;
 
   if (audio.muted) {
     audio.muted = false;
-    icon.classList.replace('fa-volume-mute', 'fa-volume-up');
-    audio.play().catch(err => console.error("Gagal unmute:", err));
+    icon.classList.remove('fa-volume-mute');
+    icon.classList.add('fa-volume-up');
   } else {
     audio.muted = true;
-    icon.classList.replace('fa-volume-up', 'fa-volume-mute');
+    icon.classList.remove('fa-volume-up');
+    icon.classList.add('fa-volume-mute');
   }
 }
 
-
+document.addEventListener("click", function playAudioOnce() {
+  const audio = document.getElementById('invitation-audio');
+  if (audio && !audio.played.length) {
+    audio.play().catch(() => {
+      alert("Silakan klik ikon suara untuk putar musik.");
+    });
+  }
+  // Hapus listener setelah dijalankan sekali
+  document.removeEventListener("click", playAudioOnce);
+});
 </script>
-<div id="volume-control" title="Klik untuk mute/unmute" onclick="toggleAudio()">
-  <i class="fas fa-volume-up"></i>
-</div>
-<audio id="invitation-audio" src="hiya zaujati.mp3" loop></audio>
 </body>
 </html>
