@@ -521,12 +521,12 @@
     <h1 id="guest-name">Tamu Undangan yang Terhormat</h1>
     <button onclick="openInvitation()">Buka Undangan</button>
   </div>
-  <!-- Pindahkan volume-control ke dalam div utama -->
-  <div id="volume-control" title="Klik untuk mute/unmute" onclick="toggleAudio()">
-    <i id="volume-icon" class="fas fa-volume-up"></i>
-  </div>
+        <!-- Pindahkan volume-control ke dalam div utama -->
+      <div id="volume-control" title="Klik untuk mute/unmute" onclick="toggleAudio()">
+        <i id="volume-icon" class="fas fa-volume-up"></i>
+      </div>
 
-  <audio id="invitation-audio" src="hiya zaujati.mp3" loop></audio>
+      <audio id="invitation-audio" src="hiya zaujati.mp3" loop></audio>
   <div id="mainContent" class="hidden">
     <div id="fullpage">
       <!-- Section 1 -->
@@ -605,31 +605,6 @@ function openInvitation() {
       alert("Silakan klik ikon suara untuk putar musik.");
     });
   }
-
-  // Inisialisasi fullpage.js seperti semula
-  setTimeout(() => {
-    new fullpage('#fullpage', {
-      autoScrolling: true,
-      fitToSection: true,
-      scrollBar: false,
-      navigation: false,
-      anchors: ['walimatul', 'ayat', 'profil', 'lokasi', 'kehadiran'],
-      afterLoad: function(origin, destination, direction) {
-        const currentVideo = destination.item.querySelector('video');
-        if (currentVideo) {
-          currentVideo.currentTime = 0;
-          currentVideo.play();
-        }
-      },
-      onLeave: function(origin, destination, direction) {
-        const leavingVideo = origin.item.querySelector('video');
-        if (leavingVideo) {
-          leavingVideo.pause();
-          leavingVideo.currentTime = 0;
-        }
-      }
-    });
-  }, 100);
 }
 
   // Fungsi untuk mengelola pemutaran video
@@ -725,35 +700,21 @@ function handleVideoPlayback(video) {
 
   document.querySelectorAll('.section').forEach(section => observer.observe(section));
 
-  currentVideo.onended = () => {
-  currentVideo.pause();
-  currentVideo.currentTime = 0;
-
-  // Hentikan animasi transformasi jika ada
-  const sectionContent = destination.item.querySelector('.additional-text');
-  if (sectionContent) {
-    sectionContent.style.transform = 'translateY(0)';
-  }
-};
-
-// Fungsi toggle audio manual
+// Fungsi untuk mengelola audio
 function toggleAudio() {
   const audio = document.getElementById('invitation-audio');
   const icon = document.getElementById('volume-icon');
-
   if (!audio) return;
-
   if (audio.muted) {
     audio.muted = false;
-    icon.classList.remove('fa-volume-mute');
-    icon.classList.add('fa-volume-up');
+    icon.classList.replace('fa-volume-mute', 'fa-volume-up');
   } else {
     audio.muted = true;
-    icon.classList.remove('fa-volume-up');
-    icon.classList.add('fa-volume-mute');
+    icon.classList.replace('fa-volume-up', 'fa-volume-mute');
   }
 }
 
+// Pastikan audio dimulai setelah interaksi pengguna
 document.addEventListener("click", function playAudioOnce() {
   const audio = document.getElementById('invitation-audio');
   if (audio && !audio.played.length) {
